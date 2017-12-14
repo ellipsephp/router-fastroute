@@ -9,6 +9,7 @@ use FastRoute\Dispatcher;
 
 use Ellipse\Router\FastRouteAdapter;
 use Ellipse\Router\MatchedRequestHandler;
+use Ellipse\Router\RouterAdapterInterface;
 use Ellipse\Router\Exceptions\NotFoundException;
 use Ellipse\Router\Exceptions\MethodNotAllowedException;
 
@@ -18,7 +19,13 @@ describe('FastRouteAdapter', function () {
 
         $this->dispatcher = mock(Dispatcher::class);
 
-        $this->router = new FastRouteAdapter($this->dispatcher->get());
+        $this->adapter = new FastRouteAdapter($this->dispatcher->get());
+
+    });
+
+    it('should implement RouterAdapterInterface', function () {
+
+        expect($this->adapter)->toBeAnInstanceOf(RouterAdapterInterface::class);
 
     });
 
@@ -45,7 +52,7 @@ describe('FastRouteAdapter', function () {
                 Dispatcher::FOUND, $handler, $attributes,
             ]);
 
-            $test = $this->router->match($this->request->get());
+            $test = $this->adapter->match($this->request->get());
 
             $handler = new MatchedRequestHandler($handler, $attributes);
 
@@ -59,7 +66,7 @@ describe('FastRouteAdapter', function () {
 
             $test = function () {
 
-                $this->router->match($this->request->get());
+                $this->adapter->match($this->request->get());
 
             };
 
@@ -75,7 +82,7 @@ describe('FastRouteAdapter', function () {
 
             $test = function () {
 
-                $this->router->match($this->request->get());
+                $this->adapter->match($this->request->get());
 
             };
 
