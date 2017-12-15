@@ -43,52 +43,64 @@ describe('FastRouteAdapter', function () {
 
         });
 
-        it('should return a MatchedRequestHandler the given request', function () {
+        context('when a route is matched', function () {
 
-            $handler = new class {};
-            $attributes = ['k1' => 'v1', 'k2' => 'v2'];
+            it('should return a MatchedRequestHandler wrapping the matched handler and attributes', function () {
 
-            $this->dispatcher->dispatch->with('GET', '/path')->returns([
-                Dispatcher::FOUND, $handler, $attributes,
-            ]);
+                $handler = new class {};
+                $attributes = ['k1' => 'v1', 'k2' => 'v2'];
 
-            $test = $this->adapter->match($this->request->get());
+                $this->dispatcher->dispatch->with('GET', '/path')->returns([
+                    Dispatcher::FOUND, $handler, $attributes,
+                ]);
 
-            $handler = new MatchedRequestHandler($handler, $attributes);
+                $test = $this->adapter->match($this->request->get());
 
-            expect($test)->toEqual($handler);
+                $handler = new MatchedRequestHandler($handler, $attributes);
 
-        });
+                expect($test)->toEqual($handler);
 
-        it('should fail when no route is matching the given request', function () {
-
-            $this->dispatcher->dispatch->returns([Dispatcher::NOT_FOUND]);
-
-            $test = function () {
-
-                $this->adapter->match($this->request->get());
-
-            };
-
-            $exception = new NotFoundException('GET', '/path');
-
-            expect($test)->toThrow($exception);
+            });
 
         });
 
-        it('should fail when the given request method is not accepted for its path', function () {
+        context('when no route is matching the given request', function () {
 
-            $this->dispatcher->dispatch->returns([Dispatcher::METHOD_NOT_ALLOWED, ['POST']]);
+            it('should throw a NotFoundException', function () {
 
-            $test = function () {
+                $this->dispatcher->dispatch->returns([Dispatcher::NOT_FOUND]);
 
-                $this->adapter->match($this->request->get());
+                $test = function () {
 
-            };
+                    $this->adapter->match($this->request->get());
 
-            $exception = new MethodNotAllowedException('/path', ['POST']);
+                };
 
-            expect($test)->toThrow($exception);
+                $exception = new NotFoundException('GET', '/path');
+
+                expect($test)->toThrow($exception);
+
+            });
+
+        });
+
+        context('when a route is matching the request url but with a different method', function () {
+
+            it('should fail when the given request method is not accepted for its path', function () {
+
+                $this->dispatcher->dispatch->returns([Dispatcher::METHOD_NOT_ALLOWED, ['POST']]);
+
+                $test = function () {
+
+                    $this->adapter->match($this->request->get());
+
+                };
+
+                $exception = new MethodNotAllowedException('/path', ['POST']);
+
+                expect($test)->toThrow($exception);
+
+            });
 
         });
 
