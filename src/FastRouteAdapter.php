@@ -31,12 +31,7 @@ class FastRouteAdapter implements RouterAdapterInterface
     }
 
     /**
-     * Return a matched handler for the given request.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @return \Ellipse\Router\MatchedRequestHandler
-     * @throws \Ellipse\Router\Exceptions\NotFoundException
-     * @throws \Ellipse\Router\Exceptions\MethodNotAllowedException
+     * @inheritdoc
      */
     public function match(ServerRequestInterface $request): MatchedRequestHandler
     {

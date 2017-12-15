@@ -5,19 +5,10 @@ namespace Ellipse\Router;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-use Interop\Http\Server\RequestHandlerInterface;
-
 use FastRoute\Dispatcher;
 
-class FastRouteRequestHandler implements RequestHandlerInterface
+class FastRouteRequestHandler extends RouterRequestHandler
 {
-    /**
-     * The fastroute adapter.
-     *
-     * @var \Ellipse\Router\RouterRequestHandler
-     */
-    private $delegate;
-
     /**
      * Set up a fast route request handler with the given dispatcher.
      *
@@ -25,16 +16,6 @@ class FastRouteRequestHandler implements RequestHandlerInterface
      */
     public function __construct(Dispatcher $dispatcher)
     {
-        $this->delegate = new RouterRequestHandler(
-            new FastRouteAdapter($dispatcher)
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
-        return $this->delegate->handle($request);
+        parent::__construct(new FastRouteAdapter($dispatcher));
     }
 }
