@@ -6,8 +6,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 use FastRoute\Dispatcher;
 
-use Ellipse\Router\RouterAdapterInterface;
-use Ellipse\Router\MatchedRequestHandler;
 use Ellipse\Router\Exceptions\NotFoundException;
 use Ellipse\Router\Exceptions\MethodNotAllowedException;
 

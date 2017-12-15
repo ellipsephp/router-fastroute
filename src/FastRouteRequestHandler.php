@@ -2,9 +2,6 @@
 
 namespace Ellipse\Router;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-
 use FastRoute\Dispatcher;
 
 class FastRouteRequestHandler extends RouterRequestHandler
