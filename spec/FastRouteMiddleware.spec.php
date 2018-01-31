@@ -1,8 +1,6 @@
 <?php
 
-use function Eloquent\Phony\Kahlan\mock;
-
-use FastRoute\Dispatcher;
+use function Eloquent\Phony\Kahlan\stub;
 
 use Ellipse\Router\RouterMiddleware;
 use Ellipse\Router\FastRouteMiddleware;
@@ -11,9 +9,9 @@ describe('FastRouteMiddleware', function () {
 
     beforeEach(function () {
 
-        $this->dispatcher = mock(Dispatcher::class);
+        $this->factory = stub();
 
-        $this->router = new FastRouteMiddleware($this->dispatcher->get());
+        $this->router = new FastRouteMiddleware($this->factory);
 
     });
 

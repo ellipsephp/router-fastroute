@@ -2,17 +2,15 @@
 
 namespace Ellipse\Router;
 
-use FastRoute\Dispatcher;
-
 class FastRouteRequestHandler extends RouterRequestHandler
 {
     /**
-     * Set up a fast route request handler with the given dispatcher.
+     * Set up a fast route request handler with the given dispatcher factory.
      *
-     * @param \FastRoute\Dispatcher $dispatcher
+     * @param callable $factory
      */
-    public function __construct(Dispatcher $dispatcher)
+    public function __construct(callable $factory)
     {
-        parent::__construct(new FastRouteAdapter($dispatcher));
+        parent::__construct(new FastRouteAdapterFactory($factory));
     }
 }

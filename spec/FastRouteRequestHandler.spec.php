@@ -1,8 +1,6 @@
 <?php
 
-use function Eloquent\Phony\Kahlan\mock;
-
-use FastRoute\Dispatcher;
+use function Eloquent\Phony\Kahlan\stub;
 
 use Ellipse\Router\RouterRequestHandler;
 use Ellipse\Router\FastRouteRequestHandler;
@@ -11,9 +9,9 @@ describe('FastRouteRequestHandler', function () {
 
     beforeEach(function () {
 
-        $this->dispatcher = mock(Dispatcher::class);
+        $this->factory = stub();
 
-        $this->router = new FastRouteRequestHandler($this->dispatcher->get());
+        $this->router = new FastRouteRequestHandler($this->factory);
 
     });
 
