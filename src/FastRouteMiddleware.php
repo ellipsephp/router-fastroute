@@ -5,7 +5,7 @@ namespace Ellipse\Router;
 class FastRouteMiddleware extends RouterMiddleware
 {
     /**
-     * Set up a fast route middleware with the given dispatcher factory.
+     * Set up a fastroute middleware with the given dispatcher factory.
      *
      * @param callable $factory
      */

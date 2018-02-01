@@ -9,9 +9,7 @@ describe('FastRouteRequestHandler', function () {
 
     beforeEach(function () {
 
-        $this->factory = stub();
-
-        $this->router = new FastRouteRequestHandler($this->factory);
+        $this->router = new FastRouteRequestHandler(stub());
 
     });
 

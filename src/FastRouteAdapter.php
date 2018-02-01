@@ -40,15 +40,15 @@ class FastRouteAdapter implements RouterAdapterInterface
 
         if ($info[0] == Dispatcher::METHOD_NOT_ALLOWED) {
 
-            $allowed_methods = $info[1];
+            $allowed = $info[1];
 
-            throw new MethodNotAllowedException($uri, $allowed_methods);
+            throw new MethodNotAllowedException($method, $uri, $allowed);
 
         }
 
         if ($info[0] == Dispatcher::NOT_FOUND) {
 
-            throw new NotFoundException($method, $uri);
+            throw new NotFoundException($uri);
 
         }
 

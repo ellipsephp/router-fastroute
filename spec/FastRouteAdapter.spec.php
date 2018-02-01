@@ -64,7 +64,7 @@ describe('FastRouteAdapter', function () {
 
         });
 
-        context('when no route is matching the given request', function () {
+        context('when no route is matching the request path', function () {
 
             it('should throw a NotFoundException', function () {
 
@@ -76,7 +76,7 @@ describe('FastRouteAdapter', function () {
 
                 };
 
-                $exception = new NotFoundException('GET', '/path');
+                $exception = new NotFoundException('/path');
 
                 expect($test)->toThrow($exception);
 
@@ -84,9 +84,9 @@ describe('FastRouteAdapter', function () {
 
         });
 
-        context('when a route is matching the request url but with a different method', function () {
+        context('when a route is matching the request path but with a different method', function () {
 
-            it('should fail when the given request method is not accepted for its path', function () {
+            it('should throw a MethodNotAllowedException', function () {
 
                 $this->dispatcher->dispatch->returns([Dispatcher::METHOD_NOT_ALLOWED, ['POST']]);
 
@@ -96,7 +96,7 @@ describe('FastRouteAdapter', function () {
 
                 };
 
-                $exception = new MethodNotAllowedException('/path', ['POST']);
+                $exception = new MethodNotAllowedException('GET', '/path', ['POST']);
 
                 expect($test)->toThrow($exception);
 

@@ -5,7 +5,7 @@ namespace Ellipse\Router;
 class FastRouteRequestHandler extends RouterRequestHandler
 {
     /**
-     * Set up a fast route request handler with the given dispatcher factory.
+     * Set up a fastroute request handler with the given dispatcher factory.
      *
      * @param callable $factory
      */

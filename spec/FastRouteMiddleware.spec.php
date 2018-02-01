@@ -9,15 +9,13 @@ describe('FastRouteMiddleware', function () {
 
     beforeEach(function () {
 
-        $this->factory = stub();
-
-        $this->router = new FastRouteMiddleware($this->factory);
+        $this->middleware = new FastRouteMiddleware(stub());
 
     });
 
     it('should extend RouterMiddleware', function () {
 
-        expect($this->router)->toBeAnInstanceOf(RouterMiddleware::class);
+        expect($this->middleware)->toBeAnInstanceOf(RouterMiddleware::class);
 
     });
 

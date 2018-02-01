@@ -16,7 +16,7 @@ class FastRouteAdapterFactory implements RouterAdapterFactoryInterface
     private $delegate;
 
     /**
-     * Set up a fast route adapter factory with the given delegate.
+     * Set up a fastroute adapter factory with the given delegate.
      *
      * @param callable $delegate
      */
@@ -26,7 +26,7 @@ class FastRouteAdapterFactory implements RouterAdapterFactoryInterface
     }
 
     /**
-     * Return a new fast route adapter wrapped around the dispatcher produced by
+     * Return a new fastroute adapter wrapped around the dispatcher produced by
      * the delegate.
      *
      * @return \Ellipse\Router\RouterAdapterInterface
