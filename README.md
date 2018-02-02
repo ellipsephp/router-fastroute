@@ -45,7 +45,7 @@ use Ellipse\Router\FastRouteRequestHandler;
 $request = some_psr7_request_factory();
 
 // Create a fastroute dispatcher factory.
-$factory = function () {
+$factory = function ($r) {
 
     // Create a new fastroute route collector.
     $r = new RouteCollector(
@@ -92,7 +92,7 @@ use Ellipse\Router\FastRouteMiddleware;
 $request = some_psr7_request_factory();
 
 // Create a fastroute dispatcher factory.
-$factory = function () {
+$factory = function ($r) {
 
     // Create a new fastroute route collector.
     $r = new RouteCollector(
@@ -114,7 +114,7 @@ $factory = function () {
 $middleware = new FastRouteMiddleware($factory);
 
 // When a route is matched the request is handled by the matched request handler.
-// Otherwise use NextRequestHandler to handle the request.
+// Otherwise NextRequestHandler is used to handle the request.
 $response = $middleware->process($request, new NextRequestHandler);
 ```
 ## Dispatcher factories helpers
