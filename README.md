@@ -1,6 +1,6 @@
 # FastRoute
 
-FastRoute **[Psr-15](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-15-request-handlers.md)** middleware and request handler.
+FastRoute **[Psr-15](https://www.php-fig.org/psr/psr-15/)** middleware and request handler.
 
 **Require** php >= 7.1
 
