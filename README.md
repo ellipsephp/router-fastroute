@@ -10,6 +10,7 @@ FastRoute **[Psr-15](https://www.php-fig.org/psr/psr-15/)** middleware and reque
 
 - [Usage as request handler](https://github.com/ellipsephp/router-fastroute#usage-as-request-handler)
 - [Usage as middleware](https://github.com/ellipsephp/router-fastroute#usage-as-middleware)
+- [Group count based middleware and request handler](https://github.com/ellipsephp/router-fastroute#group-count-based-middleware-and-request-handler)
 - [Dispatcher factories helpers](https://github.com/ellipsephp/router-fastroute#dispatcher-factories-helpers)
 
 ## Usage as request handler
@@ -66,7 +67,8 @@ $factory = function ($r) {
 // Create a fastroute request handler using this factory.
 $handler = new FastRouteRequestHandler($factory);
 
-// Produce a response with the fastroute request handler.
+// When a route is matched the request is handled by this route request handler.
+// Otherwise NotFoundException or MethodNotAllowedException is thrown
 $response = $handler->handle($request);
 ```
 
@@ -113,10 +115,41 @@ $factory = function ($r) {
 // Create a fastroute middleware using this factory.
 $middleware = new FastRouteMiddleware($factory);
 
-// When a route is matched the request is handled by the matched request handler.
-// Otherwise NextRequestHandler is used to handle the request.
+// When a route is matched the request is handled by this route request handler.
+// When a NotFoundException is thrown, NextRequestHandler is used to handle the request.
 $response = $middleware->process($request, new NextRequestHandler);
 ```
+
+## Group count based middleware and request handler
+
+As fastroute dispatchers are usually group count based, this package provides an `Ellipse\Router\FastRoute\GroupCountBasedMiddleware` and an `Ellipse\Router\FastRoute\GroupCountBasedRequestHandler` taking only a route definition callback as parameter allowing to easily create group count based fastroute middleware and request handler.
+
+```php
+<?php
+
+namespace App;
+
+use Ellipse\Router\FastRoute\GroupCountBasedMiddleware;
+use Ellipse\Router\FastRoute\GroupCountBasedRequestHandler;
+
+// Create a route definition callback.
+$routeDefinitionCallback = function ($r) {
+
+    // The route handlers must be Psr-15 request handlers.
+    $r->get('/', new SomeRequestHandler);
+
+    // When this route is matched a new request with an 'id' attribute would be passed to the request handler.
+    $r->get('/path/{id}', new SomeOtherRequestHandler);
+
+};
+
+// Create a fastroute middleware using a group count based dispatcher.
+$middleware = new GroupCountBasedMiddleware($routeDefinitionCallback);
+
+// Create a fastroute request handler using a group count based dispatcher.
+$handler = new GroupCountBasedRequestHandler($routeDefinitionCallback);
+```
+
 ## Dispatcher factories helpers
 
 This package provides two dispatcher factories helpers proxying the [fastroute ones](https://github.com/nikic/FastRoute/blob/master/src/functions.php): `Ellipse\Router\FastRoute\SimpleDispatcher` and `Ellipse\Router\FastRoute\CachedDispatcher`.
@@ -128,16 +161,9 @@ Those two classes are just callables proxying their respective fastroute functio
 
 namespace App;
 
-use FastRoute\RouteParser;
-use FastRoute\DataGenerator;
-use FastRoute\Dispatcher;
-use FastRoute\RouteCollector;
-
+use Ellipse\Router\FastRouteMiddleware;
 use Ellipse\Router\FastRouteRequestHandler;
 use Ellipse\Router\FastRoute\SimpleDispatcher;
-
-// Get a psr7 request.
-$request = some_psr7_request_factory();
 
 // Create a route definition callback like with fastroute simpleDispatcher function.
 $routeDefinitionCallback = function ($r) {
@@ -155,10 +181,13 @@ $options = [
     // Can specify fastroute classes to use.
 ];
 
-// Create a fastroute request handlerusing fastroute simpleDispatcher function.
+// Create a dispatcher factory using fastroute simpleDispatcher function.
 // Same with CachedDispatcher using fastroute cachedDispatcher.
-$handler = new FastRouteRequestHandler(new SimpleDispatcher($routeDefinitionCallback, $options));
+$factory = new SimpleDispatcher($routeDefinitionCallback, $options);
 
-// Produce a response with the fastroute request handler.
-$response = $handler->handle($request);
+// Create a fastroute middleware using this dispatcher factory.
+$middleware = new FastRouteMiddleware($factory);
+
+// Create a fastroute request handler using this dispatcher factory.
+$handler = new FastRouteRequestHandler($factory);
 ```
