@@ -6,15 +6,19 @@ use TypeError;
 
 use FastRoute\Dispatcher;
 
+use Ellipse\Exceptions\Type;
+use Ellipse\Exceptions\Value;
+
 class FastRouteDispatcherTypeException extends TypeError implements RouterAdapterExceptionInterface
 {
     public function __construct($value)
     {
-        $template = "The fastroute dispatcher factory returned a value of type %s - object implementing %s expected";
+        $template = "The value returned by the fastroute dispatcher factory has type %s - %s expected";
 
-        $type = is_object($value) ? get_class($value) : gettype($value);
+        $value = new Value($value);
+        $type = new Type(Dispatcher::class);
 
-        $msg = sprintf($template, $type, Dispatcher::class);
+        $msg = sprintf($template, $value->type(), $type);
 
         parent::__construct($msg);
     }
